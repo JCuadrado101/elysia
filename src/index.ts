@@ -18,9 +18,19 @@ new Elysia()
   .get("/", () => "hello world")
   .get("test", () => "new page")
 
+  // state and decorate
+  .state('version', 1)
+  .decorate("getDate", () => Date.now().toLocaleString())
+  .get('/version', ({
+    getDate,
+    store: { version }
+  }) => `${version} ${getDate()}`
+  )
+
   // route and params with context
   .get('/id/:id', (context) => context.params.id) 
 
+  // post example through body
   .post(
     "/profile",
     ({ body }) => body,
@@ -32,7 +42,6 @@ new Elysia()
   )
 
   // hander example
-
   .post('/sign', ({ body, set }) => {
     const signed = signIn(body);
 
